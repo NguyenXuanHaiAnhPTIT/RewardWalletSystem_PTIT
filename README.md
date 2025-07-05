@@ -126,7 +126,7 @@ https://github.com/NguyenXuanHaiAnhPTIT/RewardWalletSystem_PTITSemester3
 | Dang ky                    | Đổi mật khẩu (Yêu cầu OTP)                              | 
 | Khoa tai khoan             |  Cập nhật, thay đổi thông tin cá nhân (Yêu cầu OTP)     | 
 | Mo khoa tai khoan          | Xem lịch sử giao dịch                                   | 
-| Nap diem                   | Đăng xuất                                               | 
+| Nap diem                   | Nạp điểm cho user                                            | 
 | Lich su giao dich          | Xem thông tin cá nhân                                   | 
 | Sao luu du lieu            | Đổi mật khẩu (Yêu cầu OTP)                              | 
 | Khoi phuc du lieu          |  Cập nhật, thay đổi thông tin cá nhân (Yêu cầu OTP)     | 
