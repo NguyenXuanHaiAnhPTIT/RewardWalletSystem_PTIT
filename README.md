@@ -131,7 +131,7 @@ https://github.com/NguyenXuanHaiAnhPTIT/RewardWalletSystem_PTITSemester3
 | Sao luu du lieu            | Đổi mật khẩu (Yêu cầu OTP)                              | 
 | Khoi phuc du lieu          |  Cập nhật, thay đổi thông tin cá nhân (Yêu cầu OTP)     | 
 | Dang xuat                  | Đăng xuất                                               | 
-### Hướng dẫn tạo tài khoản admin
+### ✍️ Hướng dẫn tạo tài khoản admin
 - Tài khoản admin mặc định: admin
 -  Mật khẩu: admin@123
 
