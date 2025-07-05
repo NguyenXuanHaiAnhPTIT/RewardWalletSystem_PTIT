@@ -133,11 +133,12 @@ https://github.com/NguyenXuanHaiAnhPTIT/RewardWalletSystem_PTITSemester3
 | Dang xuat                  | Đăng xuất                                               | 
 ### Hướng dẫn tạo tài khoản admin
 
-|Các bước                    |                          Quy trình      |
-|----------------------------|---------------------------------------------------------|
-| Bước 1                     | Truy cập file Data->User->Chọn tên user vừa đăng ký (đuôi.dat)-> Mở file bằng notepad                          |
-| Bước 2                     | Đổi dãy số 0 0 0 thành 1 0 0 (số 0 từ dưới lên)          |
- |Bước 3                     | Hoàn thành tạo tài khoản admin từ tài khoản user         |
+|Các bước                    |                          Quy trình                                                                             |
+|----------------------------|----------------------------------------------------------------------------------------------------------------|
+| Bước 1                     | Tạo tài khoảnh user tại chức năng đăng ký  
+| Bước 2                     | Truy cập file Data->User->Chọn tên user vừa đăng ký (đuôi.dat)-> Mở file bằng notepad                          |
+| Bước 3                     | Đổi dãy số 0 0 0 thành 1 0 0 (số 0 từ dưới lên), hoàn thành tạo tài khoản admin từ tài khoản user              |
+
 
 ## 📚 Tài liệu tham khảo
 ```bash
