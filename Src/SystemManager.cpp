@@ -6,6 +6,8 @@
 #include <regex>
 #include <conio.h>
 #include <cstdlib>
+#include <filesystem>
+#include "../Include/Wallet.h"
 using namespace std;
 
 // Hàm xóa màn hình console (Windows)
@@ -57,6 +59,7 @@ bool validateEmailInput(const string& s) {
 SystemManager::SystemManager() {
     currentUser = nullptr;
     currentWallet = nullptr;
+    fileManager.initMasterWalletIfNotExists();
 }
 
 // --- Menu chính ---
@@ -189,6 +192,12 @@ void SystemManager::registerUser() {
     user.hashedPassword = Sha256(password);
     user.isAdmin = false;
     user.isLocked = false;
+    // Xác thực OTP trước khi lưu tài khoản
+    cout << "Nhap ma OTP de xac nhan dang ky tai khoan...\n";
+    if (!otpManager.requestOTPWithTimeout()) {
+        cout << "Dang ky that bai do xac thuc OTP!\n";
+        return;
+    }
 
     if (fileManager.saveUser(user)) {
         // Tạo ví mới với số dư 0 điểm
@@ -298,6 +307,12 @@ void SystemManager::registerUserAsAdmin() {
     user.hashedPassword = Sha256(password);
     user.isAdmin = false;
     user.isLocked = false;
+    // Xác thực OTP trước khi lưu tài khoản
+    cout << "Nhap ma OTP de xac nhan tao tai khoan ho nguoi dung...\n";
+    if (!otpManager.requestOTPWithTimeout()) {
+        cout << "Tao tai khoan that bai do xac thuc OTP!\n";
+        return;
+    }
     if (fileManager.saveUser(user)) {
         Wallet w(user.username + "_wallet", user.username, 0);
         fileManager.saveWallet(w);
@@ -725,6 +740,11 @@ void SystemManager::transferPoints() {
     );
     if (!ok) { cout << "Huy tac vu chuyen diem.\n"; return; }
 
+    // NGĂN chuyển cho master
+    if (toUsername == "master") {
+        cout << "Khong the chuyen diem cho vi tong!\n";
+        return;
+    }
     string inputAmount;
     ok = safeInput(
         "Nhap so diem can chuyen: ",
@@ -807,24 +827,24 @@ void SystemManager::transferPoints() {
 // --- Admin nạp điểm cho user ---
 void SystemManager::topupUserWallet() {
     clearScreen();
-    cout << "--- ADMIN NAP DIEM CHO USER ---\n";
-
+    cout << "--- ADMIN NAP DIEM ---\n";
     string username;
     bool ok = safeInput(
-        "Nhap username can nap diem: ",
+        "Nhap username can nap diem (hoac 'master' de nap vao vi tong): ",
         [&](const string& s) {
             if (s.empty()) return false;
+            if (s == "master") return true; // Cho phép nạp vào ví tổng
             UserAccount u;
-            return fileManager.loadUser(s, u) && !u.isLocked;
+            return fileManager.loadUser(s, u) && !u.isLocked && !u.isAdmin;
         },
         username,
-        "Nguoi dung khong ton tai hoac dang bi khoa!"
+        "Nguoi dung khong ton tai/bi khoa/khong hop le! (Admin chi nap cho user, hoac 'master')"
     );
     if (!ok) { cout << "Huy tac vu nap diem.\n"; return; }
 
     string inputAmount;
     ok = safeInput(
-        "Nhap so diem can nap: ",
+        username == "master" ? "Nhap so diem muon nap vao vi tong: " : "Nhap so diem muon chuyen tu vi tong cho user: ",
         [](const string& s) {
             if (s.empty()) return false;
             for (char c : s) if (!isdigit(c)) return false;
@@ -832,48 +852,111 @@ void SystemManager::topupUserWallet() {
             return a > 0;
         },
         inputAmount,
-        "So diem nap phai la so nguyen duong!"
+        "So diem phai la so nguyen duong!"
     );
     if (!ok) { cout << "Huy tac vu nap diem.\n"; return; }
     long long amount = stoll(inputAmount);
 
+    // Xác thực OTP
     if (!otpManager.requestOTPWithTimeout()) {
         cout << "Da huy tac vu vi xac thuc OTP that bai hoac het han.\n";
+        // Ghi log thất bại
+        auto now = chrono::system_clock::now();
+        time_t now_c = chrono::system_clock::to_time_t(now);
+        char buf[100];
+        tm timeInfo;
+        localtime_s(&timeInfo, &now_c);
+        strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &timeInfo);
+        Transaction tx(
+            username == "master" ? "TX-ADMIN-TOPUP-MASTER-" + to_string(now_c)
+            : "TX-MASTER-" + username + "-" + to_string(now_c),
+            username == "master" ? "ADMIN" : "master",
+            username,
+            amount,
+            buf,
+            "Failed",
+            "OTP that bai"
+        );
+        fileManager.saveTransaction(tx);
         return;
     }
 
-    Wallet userWallet;
-    if (!fileManager.loadWallet(username, userWallet)) {
-        cout << "Khong the nap du lieu vi nguoi nhan.\n";
+    if (username == "master") {
+        // Nạp điểm vào ví tổng
+        Wallet masterWallet;
+        fileManager.loadWallet("master", masterWallet); // hoặc "master_wallet" nếu bạn dùng đúng ID
+        masterWallet.balance += amount;
+        bool ok2 = fileManager.saveWallet(masterWallet);
+
+        // Ghi log
+        auto now = chrono::system_clock::now();
+        time_t now_c = chrono::system_clock::to_time_t(now);
+        char buf[100];
+        tm timeInfo;
+        localtime_s(&timeInfo, &now_c);
+        strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &timeInfo);
+
+        Transaction tx(
+            "TX-ADMIN-TOPUP-MASTER-" + to_string(now_c),
+            "ADMIN", "master", amount, buf,
+            ok2 ? "Success" : "Failed",
+            ok2 ? "Nap diem vao vi tong" : "Loi khi ghi du lieu vi tong"
+        );
+        fileManager.saveTransaction(tx);
+
+        cout << (ok2 ? "Nap diem vao vi tong thanh cong!\n" : "Loi khi nap diem vao vi tong!\n");
         return;
-    }
-    userWallet.balance += amount;
-    bool ok2 = fileManager.saveWallet(userWallet);
-
-    // Tạo timestamp
-    auto now = chrono::system_clock::now();
-    time_t now_c = chrono::system_clock::to_time_t(now);
-    char buf[100];
-    tm timeInfo;
-    localtime_s(&timeInfo, &now_c);
-    strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &timeInfo);
-    string timeStamp = buf;
-
-    Transaction tx(
-        "TX-ADMIN-TOPUP-" + username + "-" + to_string(now_c),
-        "ADMIN", username, amount, timeStamp,
-        ok2 ? "Success" : "Failed",
-        ok2 ? "Nap diem thanh cong" : "Loi khi ghi du lieu vi"
-    );
-    fileManager.saveTransaction(tx);
-
-    if (ok2) {
-        cout << "Nap diem thanh cong! So du moi: " << userWallet.balance << " diem\n";
     }
     else {
-        cout << "Loi khi nap diem!\n";
+        // Chuyển điểm từ ví tổng cho user
+        Wallet masterWallet, userWallet;
+        fileManager.loadWallet("master", masterWallet); // hoặc "master_wallet"
+        fileManager.loadWallet(username, userWallet);
+
+        if (masterWallet.balance < amount) {
+            cout << "So du vi tong khong du! Giao dich bi huy.\n";
+            // Ghi log thất bại
+            auto now = chrono::system_clock::now();
+            time_t now_c = chrono::system_clock::to_time_t(now);
+            char buf[100];
+            tm timeInfo;
+            localtime_s(&timeInfo, &now_c);
+            strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &timeInfo);
+
+            Transaction tx(
+                "TX-MASTER-" + username + "-" + to_string(now_c),
+                "master", username, amount, buf, "Failed", "Khong du diem trong vi tong"
+            );
+            fileManager.saveTransaction(tx);
+            return;
+        }
+        // Trừ điểm ví tổng, cộng cho user
+        masterWallet.balance -= amount;
+        userWallet.balance += amount;
+        bool ok1 = fileManager.saveWallet(masterWallet);
+        bool ok2 = fileManager.saveWallet(userWallet);
+
+        // Ghi log giao dịch
+        auto now = chrono::system_clock::now();
+        time_t now_c = chrono::system_clock::to_time_t(now);
+        char buf[100];
+        tm timeInfo;
+        localtime_s(&timeInfo, &now_c);
+        strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &timeInfo);
+
+        Transaction tx(
+            "TX-MASTER-" + username + "-" + to_string(now_c),
+            "master", username, amount, buf,
+            (ok1 && ok2) ? "Success" : "Failed",
+            (ok1 && ok2) ? "Chuyen diem tu vi tong" : "Loi khi ghi du lieu vi"
+        );
+        fileManager.saveTransaction(tx);
+
+        cout << ((ok1 && ok2) ? "Chuyen diem thanh cong!\n" : "Loi khi chuyen diem!\n");
+        return;
     }
 }
+
 
 // --- Admin khóa tài khoản user ---
 void SystemManager::lockUser() {
@@ -1116,7 +1199,16 @@ void SystemManager::viewTransactionLog() {
 void SystemManager::viewUserList() {
     clearScreen();
     cout << "--- DANH SACH NGUOI DUNG ---\n";
-
+    // --- HIEN THI VÍ TỔNG (MASTER WALLET) ---
+    Wallet masterWallet;
+    if (fileManager.loadWallet("master", masterWallet)) {
+        cout << "==============================\n";
+        cout << "== Vi Tong He Thong (MASTER) ==\n";
+        cout << "Owner    : " << masterWallet.owner << " (vi tong)\n";
+        cout << "WalletID : " << masterWallet.walletID << "\n";
+        cout << "So Du    : " << masterWallet.balance << " diem\n";
+        cout << "==============================\n";
+    }
     auto users = fileManager.loadAllUsers();
     if (users.empty()) {
         cout << "Khong co nguoi dung nao!\n";
@@ -1141,4 +1233,15 @@ void SystemManager::viewUserList() {
     getline(cin, tmp);
     // Dù nhập gì cũng sẽ out
 }
+// Hàm này sẽ kiểm tra và tạo ví tổng nếu chưa có
+void FileManager::initMasterWalletIfNotExists() {
+    createFolderIfNotExists("Data/User");
+    string filename = "Data/User/master_wallet.dat";
+    if (!std::filesystem::exists(filename)) {
+        Wallet masterWallet("master_wallet", "master", 0);
+        saveWallet(masterWallet);
+    }
+}
+
+
 
