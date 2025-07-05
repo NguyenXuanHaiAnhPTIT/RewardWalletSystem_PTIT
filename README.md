@@ -32,12 +32,12 @@
 
 ### 👥 Phân công
 
-| Thành viên                 | Phân công công việc                                    | 
-|----------------------------|--------------------------------------------------------|
-| Nguyễn Minh Tuấn           | SystemManager.h, SystemManager.cpp, Main.cpp           | 
-| Nguyễn Xuân Hải Anh        | OTPManager.h, OTPManager.cpp                           | 
-| Phan Phúc Thịnh            | UserAccount.h, UserAccount.cpp, Wallet.h, Wallet.cpp   | 
-| Nguyễn Xuân Thanh          | FileManager.h, FileManager.cpp                         | 
+| Thành viên                 | Phân công công việc                                                                  | 
+|----------------------------|--------------------------------------------------------------------------------------|
+| Nguyễn Minh Tuấn           | SystemManager.h, SystemManager.cpp, Main.cpp                                         | 
+| Nguyễn Xuân Hải Anh        | OTPManager.h, OTPManager.cpp                                                         | 
+| Phan Phúc Thịnh            | UserAccount.h, UserAccount.cpp, Wallet.h, Wallet.cpp,Transaction.h, Transaction.cpp  | 
+| Nguyễn Xuân Thanh          | FileManager.h, FileManager.cpp                                                       | 
 ***
 
 ## 📋 Thành viên tham gia và phân công
@@ -131,7 +131,12 @@ https://github.com/NguyenXuanHaiAnhPTIT/RewardWalletSystem_PTITSemester3
 | Sao luu du lieu            | Đổi mật khẩu (Yêu cầu OTP)                              | 
 | Khoi phuc du lieu          |  Cập nhật, thay đổi thông tin cá nhân (Yêu cầu OTP)     | 
 | Dang xuat                  | Đăng xuất                                               | 
-
+### Hướng dẫn tạo tài khoản admin
+|Bước 1                      |Tạo tài khoản user tại chức năng Dang ky                 |
+|Bước 2                      |Truy cập file Data->User->Chọn tên user vừa đăng ký      |
+|                            |(đuôi.dat)-> Mở file bằng notepad                        |
+|Bước 3                      |Đổi dãy số 0 0 0 thành 1 0 0 (số 0 từ dưới lên)          |
+|                            |Hoàn thành tạo tài khoản admin từ tài khoản user         |
 
 ## 📚 Tài liệu tham khảo
 ```bash
