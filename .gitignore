@@ -1,0 +1,46 @@
+# Visual Studio cache, build results, and personal files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Bb]in/
+[Oo]bj/
+x64/
+*.exe
+*.pdb
+*.ilk
+*.log
+*.cache
+*.pch
+*.idb
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.ncb
+*.sdf
+*.dbmdl
+*.VC.db
+*.VC.opendb
+
+# Others
+*.ipch
+*.tlog
+*.lastbuildstate
+*.log
+*.sbr
+
+# Auto-generated files
+*.opensdf
+*.suo
+*.user
+*.sln.docstates
+*.sdf
+*.db
+
+# Git folder keeper
+!*/.gitkeep
