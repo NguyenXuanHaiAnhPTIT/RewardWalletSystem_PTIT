@@ -92,24 +92,23 @@ vector<UserAccount> FileManager::loadAllUsers() {
 bool FileManager::saveWallet(const Wallet& wallet) {
     createFolderIfNotExists("Data/User");
     string filename = "Data/User/" + wallet.owner + "_wallet.dat";
+    if (wallet.owner == "master") filename = "Data/User/master_wallet.dat";
     ofstream fout(filename);
     if (!fout) return false;
-
     fout << wallet.walletID << endl;
     fout << wallet.owner << endl;
     fout << wallet.balance << endl;
     fout.close();
     return true;
 }
-
 /*
     Đọc dữ liệu ví theo username
 */
 bool FileManager::loadWallet(const string& username, Wallet& wallet) {
     string filename = "Data/User/" + username + "_wallet.dat";
+    if (username == "master") filename = "Data/User/master_wallet.dat";
     ifstream fin(filename);
     if (!fin) return false;
-
     getline(fin, wallet.walletID);
     getline(fin, wallet.owner);
     fin >> wallet.balance;
