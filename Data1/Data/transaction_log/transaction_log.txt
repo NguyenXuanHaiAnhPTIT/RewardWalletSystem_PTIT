@@ -1,2 +1,0 @@
-TX-ADMIN-TOPUP-MASTER-1751729103,ADMIN,master,200,2025-07-05 22:25:03,Success,Nap diem vao vi tong
-TX-MASTER-user1-1751729150,master,user1,300,2025-07-05 22:25:50,Failed,Khong du diem trong vi tong
