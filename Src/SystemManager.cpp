@@ -1,4 +1,4 @@
-﻿#include "../Include/SystemManager.h"
+#include "../Include/SystemManager.h"
 #include "../Sha256/Sha256.h"
 #include <iostream>
 #include <random>
@@ -9,6 +9,30 @@
 #include <filesystem>
 #include "../Include/Wallet.h"
 using namespace std;
+// Hàm ẩn mật khẩu
+std::string inputPasswordHidden() {
+    std::string password;
+    char ch;
+    while (true) {
+        ch = _getch();  // đọc 1 ký tự mà không hiện ra
+        if (ch == 13) { // Enter
+            std::cout << std::endl;
+            break;
+        }
+        else if (ch == 8) { // Backspace
+            if (!password.empty()) {
+                password.pop_back();
+                std::cout << "\b \b";
+            }
+        }
+        else if (isprint(ch)) {
+            password += ch;
+            std::cout << '*';
+        }
+    }
+    return password;
+}
+
 
 // Hàm xóa màn hình console (Windows)
 void clearScreen() {
@@ -142,7 +166,7 @@ void SystemManager::registerUser() {
     int fail = 0;
     while (true) {
         cout << "Nhap mat khau (bo trong de dung mat khau tu sinh): ";
-        getline(cin, password);
+        password = inputPasswordHidden();
 
         if (!password.empty()) {
             if (password.length() > 50) {
@@ -162,7 +186,7 @@ void SystemManager::registerUser() {
                 }
                 else {
                     cout << "Nhap lai mat khau: ";
-                    getline(cin, confirm);
+                    confirm = inputPasswordHidden();
                     if (confirm != password) {
                         cout << "Mat khau khong trung khop.\n";
                         ++fail;
@@ -258,7 +282,7 @@ void SystemManager::registerUserAsAdmin() {
     int fail = 0;
     while (true) {
         cout << "Nhap mat khau (bo trong de dung mat khau tu sinh): ";
-        getline(cin, password);
+        password = inputPasswordHidden();
         if (!password.empty()) {
             if (password.length() > 50) {
                 cout << "Mat khau khong duoc vuot qua 50 ky tu!\n";
@@ -277,7 +301,7 @@ void SystemManager::registerUserAsAdmin() {
                 }
                 else {
                     cout << "Nhap lai mat khau: ";
-                    getline(cin, confirm);
+                    confirm = inputPasswordHidden();
                     if (confirm != password) {
                         cout << "Mat khau khong trung khop.\n";
                         ++fail;
@@ -360,12 +384,13 @@ void SystemManager::login() {
     int loginAttempts = 0;
     while (true) {
         cout << "Mat khau (hoac nhap 'Q' de quen mat khau): ";
-        getline(cin, password);
+        password = inputPasswordHidden();
 
         if (password == "Q" || password == "q") {
             forgotPassword(username);
             return;
         }
+
         if (user.hashedPassword == Sha256(password)) break;
         else {
             cout << "Mat khau sai!\n";
@@ -420,7 +445,8 @@ void SystemManager::changePassword() {
     // Nhập mật khẩu cũ, cho phép B/b để out, tối đa 3 lần
     while (true) {
         cout << "Nhap mat khau cu (B/b de quay lai): ";
-        getline(cin, oldPass);
+        oldPass = inputPasswordHidden();
+
         if (oldPass == "B" || oldPass == "b") return;
 
         if (currentUser->hashedPassword != Sha256(oldPass)) {
@@ -443,7 +469,8 @@ void SystemManager::changePassword() {
     int failNew = 0;
     while (true) {
         cout << "Nhap mat khau moi (B/b de quay lai): ";
-        getline(cin, newPass);
+        newPass = inputPasswordHidden();
+
         if (newPass == "B" || newPass == "b") return;
 
         if (newPass.length() > 50) {
@@ -1067,7 +1094,7 @@ void SystemManager::resetUserPasswordByAdmin() {
     int fail = 0;
     while (true) {
         cout << "Nhap mat khau moi (bo trong de dung mat khau tu sinh): ";
-        getline(cin, newPass);
+        newPass = inputPasswordHidden();
 
         if (!newPass.empty()) {
             if (newPass.length() > 50) {
@@ -1087,7 +1114,7 @@ void SystemManager::resetUserPasswordByAdmin() {
                 }
                 else {
                     cout << "Nhap lai mat khau moi: ";
-                    getline(cin, confirm);
+                    confirm = inputPasswordHidden();
                     if (confirm != newPass) {
                         cout << "Mat khau moi khong trung khop.\n";
                         ++fail;
@@ -1242,6 +1269,3 @@ void FileManager::initMasterWalletIfNotExists() {
         saveWallet(masterWallet);
     }
 }
-
-
-
