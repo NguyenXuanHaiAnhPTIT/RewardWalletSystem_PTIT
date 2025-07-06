@@ -114,9 +114,10 @@ https://github.com/NguyenXuanHaiAnhPTIT/RewardWalletSystem_PTIT.git
 ### 🔑 User Menu
 | Chức năng                  | Nội dung chức năng                                      | 
 |----------------------------|---------------------------------------------------------|
-| Thông tin ca nhan          | Xem thông tin cá nhân                                   | 
-| Doi mat khau               | Đổi mật khẩu (Yêu cầu OTP)                              | 
-| Cap nhat thong tin ca nhan |  Cập nhật, thay đổi thông tin cá nhân (Yêu cầu OTP)     | 
+| Xem thong tin              | Xem thông tin cá nhân                                   | 
+| Doi mat khau               | Đổi mật khẩu (Yêu cầu OTP)                              |
+| Chuyen diem                | Chuyển điểm từ người dùng                               |
+| Cap nhat thong tin ca nhan | Cập nhật, thay đổi thông tin cá nhân (Yêu cầu OTP)      | 
 | Lich su giao dich          | Xem lịch sử giao dịch                                   | 
 | Dang xuat                  | Đăng xuất                                               | 
  ### 🛠️ Admin Menu
@@ -127,9 +128,9 @@ https://github.com/NguyenXuanHaiAnhPTIT/RewardWalletSystem_PTIT.git
 | Khoa tai khoan             | Khóa tài khoản người dùng                               | 
 | Mo khoa tai khoan          | Mở khóa tài khoản người dùng                            | 
 | Doi mat khau ho            | Đổi mật khẩu hộ người dùng                              | 
-| Nap diem                   | Nạp điểm cho user                                       | 
+| Nap diem                   | Nạp điểm cho user và admin                              | 
 | Lich su giao dich          | Xem lịch sử giao dịch của tất cả người dùng             | 
-| Sao luu du lieu            | Sao lưu dữ liệu                                         | 
+| Sao luu du lieu            | Sao lưu dữ liệu hiện tại                                | 
 | Khoi phuc du lieu          | Khôi phục dữ liệu theo bản sao lưu gần nhất             | 
 | Dang xuat                  | Đăng xuất                                               | 
 ### ✍️ Hướng dẫn tạo tài khoản admin
