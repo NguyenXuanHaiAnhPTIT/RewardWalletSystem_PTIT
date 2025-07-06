@@ -48,7 +48,7 @@
 |:busts_in_silhouette: Phan Phúc Thịnh      | Thiết kế, phát triển và quản lý dữ liệu người dùng, ví, giao dịch                                                        | 
 |:busts_in_silhouette: Nguyễn Xuân Thanh    | Thiết kế chức năng sao lưu/khôi phục dữ liệu, thực hiện kiểm thử toàn diện, tối ưu hóa hiệu suất                         | 
 ```bash
-https://github.com/NguyenXuanHaiAnhPTIT/RewardWalletSystem_PTITSemester3/commits/main/
+https://github.com/NguyenXuanHaiAnhPTIT/RewardWalletSystem_PTIT/commits/master/
 ```
 
 ***
@@ -94,7 +94,7 @@ https://github.com/NguyenXuanHaiAnhPTIT/RewardWalletSystem_PTITSemester3/commits
 Clone hoặc tải về từ Github:
 
 ```bash
-https://github.com/NguyenXuanHaiAnhPTIT/RewardWalletSystem_PTITSemester3
+https://github.com/NguyenXuanHaiAnhPTIT/RewardWalletSystem_PTIT.git
 ```
 
 ### 📌 2. Biên dịch và chạy chương trình
@@ -102,7 +102,7 @@ https://github.com/NguyenXuanHaiAnhPTIT/RewardWalletSystem_PTITSemester3
 
 ---
 
-## 📜 Hướng dẫn sử dụng và các chức năng
+## 📜 Các chức năng và hướng dẫn sử dụng
 
  ### 🌐 Main Menu
 
@@ -126,7 +126,8 @@ https://github.com/NguyenXuanHaiAnhPTIT/RewardWalletSystem_PTITSemester3
 | Dang ky                    | Đổi mật khẩu (Yêu cầu OTP)                              | 
 | Khoa tai khoan             |  Cập nhật, thay đổi thông tin cá nhân (Yêu cầu OTP)     | 
 | Mo khoa tai khoan          | Xem lịch sử giao dịch                                   | 
-| Nap diem                   | Nạp điểm cho user                                            | 
+| Doi mat khau ho            | Đổi mật khẩu hộ người dùng                              | 
+| Nap diem                   | Nạp điểm cho user                                       | 
 | Lich su giao dich          | Xem thông tin cá nhân                                   | 
 | Sao luu du lieu            | Đổi mật khẩu (Yêu cầu OTP)                              | 
 | Khoi phuc du lieu          |  Cập nhật, thay đổi thông tin cá nhân (Yêu cầu OTP)     | 
@@ -135,13 +136,26 @@ https://github.com/NguyenXuanHaiAnhPTIT/RewardWalletSystem_PTITSemester3
 - Tài khoản admin mặc định: admin
 -  Mật khẩu: admin@123
 
-
 |Các bước                    |                          Quy trình                                                                             |
 |----------------------------|----------------------------------------------------------------------------------------------------------------|
 | Bước 1                     | Tạo tài khoảnh user tại chức năng đăng ký                                                                      |
 | Bước 2                     | Truy cập file Data->User->Chọn tên user vừa đăng ký (đuôi.dat)-> Mở file bằng notepad                          |
 | Bước 3                     | Đổi dãy số 0 0 0 thành 1 0 0 (số 0 từ dưới lên), hoàn thành tạo tài khoản admin từ tài khoản user              |
 | Bước 4                     | Hoàn thành tạo tài khoản admin từ user                                                                         |
+
+### 🔄  Hướng dẫn nạp điểm cho ví tổng
+
+|Các bước                    |                          Quy trình                                                                             |
+|----------------------------|----------------------------------------------------------------------------------------------------------------|
+| Bước 1                     | Đăng nhập bằng tài khoản admin để vào giao diện Admin Menu                                                     |
+| Bước 2                     | Chọn chức năng nạp điểm                                                                                        |
+| Bước 3                     | Nhập username người nhận là "master"                                                                           |
+| Bước 4                     | Tiến hành nạp điểm như bình thường                                                                             |
+
+### ⚠️ Lưu ý
+
+- Tự động xóa màn hình Console giữa các giao diện menu sẽ hoạt động tốt nhất trên hệ điều hành Window
+
 
 ## 📚 Tài liệu tham khảo
 ```bash
