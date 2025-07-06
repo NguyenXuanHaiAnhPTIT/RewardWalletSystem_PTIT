@@ -21,6 +21,7 @@ public:
     vector<UserAccount> loadAllUsers();                   // Đọc toàn bộ danh sách user
 
     // ---- Quản lý Wallet ----
+    void initMasterWalletIfNotExists();
     bool saveWallet(const Wallet& wallet);                // Lưu thông tin 1 ví
     bool loadWallet(const string& username, Wallet& wallet); // Đọc ví theo username
 
