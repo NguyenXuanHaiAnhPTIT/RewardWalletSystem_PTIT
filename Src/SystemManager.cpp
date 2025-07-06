@@ -9,12 +9,13 @@
 #include <filesystem>
 #include "../Include/Wallet.h"
 using namespace std;
+
 // Hàm ẩn mật khẩu
 std::string inputPasswordHidden() {
     std::string password;
     char ch;
     while (true) {
-        ch = _getch();  // đọc 1 ký tự mà không hiện ra
+        ch = _getch();
         if (ch == 13) { // Enter
             std::cout << std::endl;
             break;
@@ -25,18 +26,24 @@ std::string inputPasswordHidden() {
                 std::cout << "\b \b";
             }
         }
-        else if (isprint(ch)) {
+        // Chỉ cho phép ký tự ASCII (không dấu, không Unicode)
+        else if (ch >= 32 && ch <= 126) { // các ký tự có thể in ra màn hình (ASCII)
             password += ch;
             std::cout << '*';
         }
+        // Nếu là ký tự ngoài ASCII thì bỏ qua hoặc có thể thêm dòng cảnh báo nhẹ
+        // else { std::cout << "\nChi nhap ky tu khong dau (ASCII)!\n"; }
     }
     return password;
 }
 
-
-// Hàm xóa màn hình console (Windows)
+// Hàm xóa màn hình console (Windows/Mac)
 void clearScreen() {
+#if defined(_WIN32) || defined(_WIN64)
     system("cls");
+#else
+    system("clear");
+#endif
 }
 
 // Hàm nhập liệu an toàn, theo quy tắc toàn dự án
@@ -231,7 +238,6 @@ void SystemManager::registerUser() {
     }
     else cout << "Loi khi luu tai khoan!\n";
 }
-
 // --- Admin đăng ký hộ tài khoản ---
 void SystemManager::registerUserAsAdmin() {
     clearScreen();
