@@ -123,14 +123,14 @@ https://github.com/NguyenXuanHaiAnhPTIT/RewardWalletSystem_PTIT.git
 | Chức năng                  | Nội dung chức năng                                      | 
 |----------------------------|---------------------------------------------------------|
 | Danh sach nguoi dung       | Danh sách người dùng                                    | 
-| Dang ky                    | Đổi mật khẩu (Yêu cầu OTP)                              | 
-| Khoa tai khoan             |  Cập nhật, thay đổi thông tin cá nhân (Yêu cầu OTP)     | 
-| Mo khoa tai khoan          | Xem lịch sử giao dịch                                   | 
+| Dang ky                    | Đăng ký tài khoản người dùng mới                        | 
+| Khoa tai khoan             | Khóa tài khoản người dùng                               | 
+| Mo khoa tai khoan          | Mở khóa tài khoản người dùng                            | 
 | Doi mat khau ho            | Đổi mật khẩu hộ người dùng                              | 
 | Nap diem                   | Nạp điểm cho user                                       | 
-| Lich su giao dich          | Xem thông tin cá nhân                                   | 
-| Sao luu du lieu            | Đổi mật khẩu (Yêu cầu OTP)                              | 
-| Khoi phuc du lieu          |  Cập nhật, thay đổi thông tin cá nhân (Yêu cầu OTP)     | 
+| Lich su giao dich          | Xem lịch sử giao dịch của tất cả người dùng             | 
+| Sao luu du lieu            | Sao lưu dữ liệu                                         | 
+| Khoi phuc du lieu          | Khôi phục dữ liệu theo bản sao lưu gần nhất             | 
 | Dang xuat                  | Đăng xuất                                               | 
 ### ✍️ Hướng dẫn tạo tài khoản admin
 - Tài khoản admin mặc định: admin
